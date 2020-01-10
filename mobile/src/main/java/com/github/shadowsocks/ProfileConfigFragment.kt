@@ -191,27 +191,10 @@ class ProfileConfigFragment : PreferenceFragmentCompat(),
     }
 
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
-        //region SSD
-        val preference = findPreference<Preference>(key)
-        if (preference?.key == Key.password) {
-            val passwordPreference = preference as EditTextPreference
-            passwordPreference.setOnBindEditTextListener {
-                it.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-            }
-        }
-        //endregion
         if (key != Key.proxyApps && findPreference<Preference>(key) != null) DataStore.dirty = true
     }
 
     override fun onDisplayPreferenceDialog(preference: Preference) {
-        //region SSD
-        if (preference.key == Key.password) {
-            val passwordPreference = preference as EditTextPreference
-            passwordPreference.setOnBindEditTextListener {
-                it.inputType = InputType.TYPE_CLASS_TEXT
-            }
-        }
-        //endregion
         when (preference.key) {
             Key.plugin -> BottomSheetPreferenceDialogFragment().apply {
                 setArg(Key.plugin)
