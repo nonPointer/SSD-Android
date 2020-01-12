@@ -7,9 +7,6 @@
   <string name="latency_pending">Pending</string>
   <string name="latency_error">Error</string>
   <string name="tcping_latency">Tcping Latency</string>
-  <string name="message_check_update_fail">Check SSD update failed</string>
-  <string name="message_check_update_new">SSD has newer version</string>
-  <string name="message_update_must">Current version of SSD is out of date</string>
   <string name="message_subscribe_fail">Subscribe [%s] fail</string>
   <string name="message_subscribe_success">Subscribe [%s] success</string>
   <string name="message_loading_subscription">Loading subscription&#8230;</string>

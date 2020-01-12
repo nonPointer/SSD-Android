@@ -161,71 +161,10 @@ class MainActivity : AppCompatActivity(), ShadowsocksConnection.Callback, OnPref
     }
 
     //region SSD
-    private class CheckVersion : AsyncTask<Unit, Int, String>() {
-        val versionURL = "https://api.github.com/repos/TheCGDF/SSD-Android/releases/latest"
-        lateinit var checkUpdateContext: Context
-
-        override fun doInBackground(vararg params: Unit?): String {
-            var urlResult = ""
-            try {
-                urlResult = URL(versionURL).readText()
-            } catch (e: Exception) {
-
-            }
-            return urlResult
-        }
-
-        fun compareVersion(versionString1: String, versionString2: String): Int {
-            val versionSplit1 = versionString1.split(".")
-            val versionSplit2 = versionString2.split(".")
-            for (index in 0 until 3) {
-                if (versionSplit1[index].toInt() > versionSplit2[index].toInt()) {
-                    //String1 > String2
-                    return 1
-                }
-                if (versionSplit1[index].toInt() < versionSplit2[index].toInt()) {
-                    //String1 < String2
-                    return -1
-                }
-            }
-            //String1 = String2
-            return 0
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            if (result.isNullOrBlank()) {
-                Toast.makeText(checkUpdateContext, R.string.message_check_update_fail, Toast.LENGTH_LONG).show()
-                return
-            }
-            val jsonObject = JSONObject(result)
-            val tagName = jsonObject.optString("tag_name")
-            val buildVersion = BuildConfig.VERSION_NAME
-            val compareResult = compareVersion(tagName, buildVersion)
-            if (compareResult != 1) {
-                return
-            }
-
-            val limitBody = jsonObject.optString("body")
-            val limitRegex = Regex("""(?<=Limit:\s)\d+\.\d+\.\d+""")
-            val limitVersion = limitRegex.find(limitBody)?.value
-
-            limitVersion ?: return
-
-            if (compareVersion(limitVersion, buildVersion) == 1) {
-                Toast.makeText(checkUpdateContext, R.string.message_update_must, Toast.LENGTH_LONG).show()
-                (checkUpdateContext as Activity).finishAndRemoveTask()
-            }
-
-            Toast.makeText(checkUpdateContext, R.string.message_check_update_new, Toast.LENGTH_LONG).show()
-        }
-    }
-
     private fun getProp(key: String): String {
         val process = Runtime.getRuntime().exec("getprop " + key)
         return BufferedReader(InputStreamReader(process.inputStream)).readLine().trim().toLowerCase()
     }
-
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -243,10 +182,6 @@ class MainActivity : AppCompatActivity(), ShadowsocksConnection.Callback, OnPref
         if (getProp("ro.miui.ui.version.code").isNotEmpty() || getProp("ro.miui.ui.version.name").isNotEmpty()) {
             Toast.makeText(this, getString(R.string.message_premine_detected, "MIUI"), Toast.LENGTH_LONG).show()
         }
-
-        CheckVersion().apply {
-            checkUpdateContext = this@MainActivity
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         //endregion
         SingleInstanceActivity.register(this) ?: return
         setContentView(R.layout.layout_main)
