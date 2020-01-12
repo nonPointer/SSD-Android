@@ -16,8 +16,8 @@ buildscript {
         //region SSD
         //versionCode = 4080750
         //versionName = '4.8.7-nightly'
-        versionCode = 202000
-        versionName = '2020'
+        versionCode = 202010
+        versionName = '2020.1'
         //endregion
         resConfigs = ['ar', 'es', 'fa', 'fr', 'ja', 'ko', 'ru', 'tr', 'zh-rCN', 'zh-rTW']
     }
